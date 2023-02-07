@@ -24,72 +24,78 @@ window.addEventListener('DOMContentLoaded', function() {
     info.addEventListener('click', function(event) {
         let target = event.target;
         if (target && target.classList.contains('info-header-tab')) {
-            for(let i = 0; i < tab.length; i++) {
+            for (let i = 0; i < tab.length; i++) {
                 if (target == tab[i]) {
                     hideTabContent(0);
                     showTabContent(i);
                     break;
                 }
             }
-        }
-
+        } 
     });
 
-    // Timer 
+    //timer
 
     let deadline = '2018-11-21';
 
     function getTimeRemaining(endtime) {
-        let t = Date.parse(endtime) - Date.parse(new Date()),
-        seconds = Math.floor((t/1000) % 60),
-        minutes = Math.floor((t/1000/60) % 60),
-        hours = Math.floor((t/(1000*60*60)));
+        let t = Date.parse(endtime) - Date.parse(new Date()), // Получаем миллисекунды
+            seconds = Math.floor((t/1000) % 60), // Получаем секнды.
+            minutes = Math.floor((t/1000/60) % 60), // Получаем минуты.
+            hours = Math.floor((t/(1000*60*60))); // Получаем часы.
+            // hours = Math.floor((t/1000/60/60) % 24) // Получаем часы 24.
+            // days = Math.floor((t/(1000*60*60*24))) // Получаем дни.
 
-        return {
-            'total' : t,
-            'hours' : hours,
-            'minutes' : minutes,
-            'seconds' : seconds
+        return { // Выводим наши данные в объект.
+            'total': t,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds
         };
     }
 
-    function setClock(id, endtime) {
-        let timer = document.getElementById(id),
-            hours = timer.querySelector('.hours'),
-            minutes = timer.querySelector('.minutes'),
-            seconds = timer.querySelector('.seconds'),
-            timeInterval = setInterval(updateClock, 1000);
-            
-        function updateClock() {
-            let t = getTimeRemaining(endtime);
+    function setClock(id, endtime) { // id - id подительского блока, endtime - конечная дата, время.
+        let timer = document.getElementById(id), // Получаем родительский блок.
+            hours = timer.querySelector('.hours'), // Получаем блок с классом 'hours'.
+            minutes = timer.querySelector('.minutes'), // Получаем блок с классом 'minutes'.
+            seconds = timer.querySelector('.seconds'), // Получаем блок с классом 'seconds'.
+            timeInterval = setInterval(updateClock, 1000); // Объявили нам интервал в переменную.
+        
+        function updateClock() { // Функция обновления таймера каждую секунду.
+            let t = getTimeRemaining(endtime); // Запускаем функуию которую мы вызывали ранее.
 
-            function addZero(num){
-                        if(num <= 9) {
-                            return '0' + num;
-                        } else return num;
-                    };
-
-            hours.textContent = addZero(t.hours);
+            function addZero(num) { // Функция добавления к числу '0', что бы это смотрелось гармонично '00:00:00'.
+                if (num <= 9) {
+                    return '0' + num;
+                } else {
+                    return num;
+                }
+            }
+            hours.textContent = addZero(t.hours); // Добавляем данные в нашу верстку.
             minutes.textContent = addZero(t.minutes);
             seconds.textContent = addZero(t.seconds);
 
-            if (t.total <= 0) {
+            if (t.total <= 0) { // После того как таймер подойдет к концу, мы его останавливаем.
                 clearInterval(timeInterval);
-                hours.textContent = '00';
+                hours.textContent = '00'; // Добавляем данные в нашу верстку.
                 minutes.textContent = '00';
                 seconds.textContent = '00';
             }
         }
-
     }
 
     setClock('timer', deadline);
 
-    // Modal
-
+    //modal
     let more = document.querySelector('.more'),
+        descriptionBtn = document.querySelector('.description-btn'),
         overlay = document.querySelector('.overlay'),
         close = document.querySelector('.popup-close');
+
+    descriptionBtn.addEventListener('click', function() {
+        overlay.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    });
 
     more.addEventListener('click', function() {
         overlay.style.display = 'block';
@@ -104,3 +110,10 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 
 });
+
+let age = document.getElementById('age');
+function showUser(surname, name) {
+alert("Пользователь " + surname + " " + name + ", его возраст " + this.value);
+}
+showUser.apply(age, ['Yurchuk', 'Stepan']);
+
